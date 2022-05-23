@@ -20,7 +20,6 @@ app.get('/products', (req: Request, res: Response) => {
         res.send(products)
     }
 })
-
 app.get('/products/:id', (req: Request, res: Response) => {
     let product = products.find(p => p.id === +req.params.id)
     if (product) {
@@ -29,7 +28,6 @@ app.get('/products/:id', (req: Request, res: Response) => {
         res.send(404)
     }
 })
-
 app.put('/products/:id', (req: Request, res: Response) => {
     let product = products.find(p => p.id === +req.params.id)
     if (product) {
@@ -39,7 +37,6 @@ app.put('/products/:id', (req: Request, res: Response) => {
         res.send(404)
     }
 })
-
 app.delete('/products/:id', (req: Request, res: Response) => {
     for (let i = 0; i < products.length; i++) {
         if (products[i].id === +req.params.id) {
@@ -50,7 +47,6 @@ app.delete('/products/:id', (req: Request, res: Response) => {
     }
     res.send(404)
 })
-
 app.post('/products', (req: Request, res: Response) => {
     const newProduct = {
         id: +(new Date()),      // id generation
@@ -64,7 +60,6 @@ app.post('/products', (req: Request, res: Response) => {
 app.get('/adresses', (req: Request, res: Response) => {
     res.send(adresses)
 })
-
 app.get('/adresses/:id', (req: Request, res: Response) => {
     let adress = adresses.find(p => p.id === +req.params.id)
     if (adress) {
