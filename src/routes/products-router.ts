@@ -1,7 +1,11 @@
 import {Request, Response, Router} from "express";
 import {productsRepository} from "../rerepositories/products-repository";
+import {body, validationResult} from "express-validator";
+import {inputValidationMiddleware} from "../middlewares/input-validation-middleware";
 
 export const productsRouter = Router ({})
+
+const titleValidation = body('title').trim().isLength({min: 3, max: 10}).withMessage('length')
 
 productsRouter.get('/', (req: Request, res: Response) => {
     const foundProducts = productsRepository.findProducts(req.query.title?.toString());
@@ -15,7 +19,10 @@ productsRouter.get('/:id', (req: Request, res: Response) => {
         res.send(404)
     }
 })
-productsRouter.put('/:id', (req: Request, res: Response) => {
+productsRouter.put('/:id',
+    titleValidation,
+    inputValidationMiddleware,
+    (req: Request, res: Response) => {
     const isUpdated = productsRepository.updateProduct(+req.params.id, req.body.title)
     if (isUpdated) {
         const product = productsRepository.findProductById(+req.params.id)
@@ -32,7 +39,11 @@ productsRouter.delete('/:id', (req: Request, res: Response) => {
         res.send(404)
     }
 })
-productsRouter.post('/', (req: Request, res: Response) => {
+productsRouter.post('/',
+    titleValidation,
+    inputValidationMiddleware,
+    (req: Request, res: Response) => {
+    const errors = validationResult(req);
     const newProduct = productsRepository.createProduct(req.body.title)
     res.status(201).send(newProduct)
 })
